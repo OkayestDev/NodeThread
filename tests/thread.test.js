@@ -1,4 +1,5 @@
 const { Thread } = require('../thread');
+const fs = require('fs');
 
 jest.setTimeout(10000000);
 
@@ -23,5 +24,15 @@ describe('Thread', () => {
                 some: 'value',
             },
         });
+    });
+
+    it('works with function with external dep', async () => {
+        const fnWithDep = () => {
+            const fs = require('fs');
+            fs.writeFileSync('test', 'written from thread');
+        };
+        const thread = Thread(fnWithDep);
+        const result = await thread.process;
+        expect(result).toBe(undefined);
     });
 });
