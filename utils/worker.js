@@ -4,7 +4,7 @@ const { fn, fnArgs } = parseParams();
 
 const parseResponse = (response) => {
     const json = JSON.stringify(response);
-    console.info(json);
+    console.log(json);
 };
 
 new Promise(async (resolve) => {

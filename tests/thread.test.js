@@ -16,8 +16,12 @@ describe('Thread', () => {
         const asyncObjectFn = async (value) => {
             return { im: value };
         };
-        const thread = Thread(asyncObjectFn, 'a thread');
+        const thread = Thread(asyncObjectFn, { some: 'value' });
         const result = await thread.process;
-        expect(result).toStrictEqual({ im: 'a thread' });
+        expect(result).toStrictEqual({
+            im: {
+                some: 'value',
+            },
+        });
     });
 });
