@@ -2,7 +2,7 @@ const { fork } = require('child_process');
 
 const asyncFork = async (workerPath, args) => {
     const child = fork(workerPath, {
-        detached: true,
+        detached: false,
         silent: false,
     });
     child.send(args);

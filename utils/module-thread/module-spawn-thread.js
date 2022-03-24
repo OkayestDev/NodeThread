@@ -1,12 +1,7 @@
-const { fork } = require('child_process');
+const { asyncFork } = require('../async-fork');
 
 const moduleSpawnThread = async (moduleAbsolutePath, fnName, ...args) => {
-    const child = fork(`${__dirname}/module-worker.js`, );
-    child.send({ moduleAbsolutePath, args, fnName });
-    return new Promise((resolve, reject) => {
-        child.on('message', resolve);
-        child.on('error', reject);
-    });
+    return asyncFork(`${__dirname}/module-worker.js`, { moduleAbsolutePath, args, fnName });
 };
 
 module.exports = {

@@ -1,5 +1,7 @@
-const { FnThread } = require('../Thread');
+const { FnThread, ModuleThread } = require('../Thread');
 const fs = require('fs');
+
+const TEST_MODULE = `${__dirname}/test-module`;
 
 jest.setTimeout(10000000);
 
@@ -45,6 +47,16 @@ describe('Thread', () => {
             const fnThread = FnThread(noResponseFn);
             const result = await fnThread.process;
             expect(result).toBe('done');
+        });
+    });
+
+    describe('ModuleThread', () => {
+        it.only('threads module', async () => {
+            const thread = ModuleThread(TEST_MODULE, 'testModule', 'hello');
+            const result = await thread.process;
+            expect(result).toBe('hello from module!');
+            expect(fs.existsSync('fromTestModule')).toBe(true);
+            fs.unlinkSync('fromTestModule');
         });
     });
 });
