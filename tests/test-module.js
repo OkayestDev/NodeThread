@@ -5,12 +5,12 @@ const testModule = (args) => {
     return `${args} from module!`;
 };
 
-const throwsAndError = () => {
+const throwsAnError = () => {
     const test = null;
     test.error();
 };
 
 module.exports = {
     testModule,
-    throwsAndError,
+    throwsAnError,
 };

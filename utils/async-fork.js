@@ -2,8 +2,9 @@ const { fork } = require('child_process');
 
 const asyncFork = async (workerPath, args) => {
     const child = fork(workerPath, {
-        detached: false,
+        detached: true,
         silent: false,
+        serialization: 'advanced',
     });
     child.send(args);
     return new Promise((resolve, reject) => {

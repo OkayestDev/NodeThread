@@ -51,12 +51,18 @@ describe('Thread', () => {
     });
 
     describe('ModuleThread', () => {
-        it.only('threads module', async () => {
+        it('threads module', async () => {
             const thread = ModuleThread(TEST_MODULE, 'testModule', 'hello');
             const result = await thread.process;
             expect(result).toBe('hello from module!');
             expect(fs.existsSync('fromTestModule')).toBe(true);
             fs.unlinkSync('fromTestModule');
+        });
+
+        it('errors propagate up', async () => {
+            const thread = ModuleThread(TEST_MODULE, 'throwsAnError');
+            const result = await thread.process;
+            expect(result.message).toBe("Cannot read properties of null (reading 'error')");
         });
     });
 });
