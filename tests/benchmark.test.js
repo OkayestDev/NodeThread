@@ -6,14 +6,26 @@ const getExecutionTime = (label) => {
     return () => console.timeEnd(label);
 };
 
-const ARRAYS_TO_CREATE = 1000000;
+const ARRAYS_TO_CREATE = 100;
+
+jest.setTimeout(100000000);
 
 describe('benchmark', () => {
-    beforeAll(() => {
+    beforeAll(async () => {
         const executionTimeNotThreaded = getExecutionTime('No Thread');
         for (let i = 0; i < ARRAYS_TO_CREATE; i++) {
-            threadMe();
+            await threadMe();
         }
+        executionTimeNotThreaded();
+    });
+
+    beforeAll(async () => {
+        const executionTimeNotThreaded = getExecutionTime('Async No Thread');
+        const promises = [];
+        for (let i = 0; i < ARRAYS_TO_CREATE; i++) {
+            promises.push(threadMe());
+        }
+        await Promise.all(promises);
         executionTimeNotThreaded();
     });
 
@@ -21,7 +33,7 @@ describe('benchmark', () => {
         const executionTimeThreaded = getExecutionTime('ModuleThread');
         const promises = [];
         for (let i = 0; i < ARRAYS_TO_CREATE; i++) {
-            promises.push(Thread.ModuleThread(`${__dirname}/thread-me.js`, threadMe.name).process);
+            promises.push(Thread.ModuleThread(`${__dirname}/thread-me.js`, 'threadMe').process);
         }
         const result = await Promise.all(promises);
         executionTimeThreaded();

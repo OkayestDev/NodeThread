@@ -1,4 +1,4 @@
-module.exports.threadMe = () => {
+module.exports.threadMe = async () => {
     const ARRAY_SIZE = 1000000;
     const createArray = () => {
         const array = [];
