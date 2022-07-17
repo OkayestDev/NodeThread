@@ -29,6 +29,14 @@ describe('benchmark', () => {
         executionTimeNotThreaded();
     });
 
+    test('time for 1 node process', async () => {
+        const executionTimeThreaded = getExecutionTime('Single Thread Empty Process');
+        const result = await Thread.ModuleThread(`${__dirname}/empty-process.js`, 'emptyProcess')
+            .process;
+        executionTimeThreaded();
+        expect(result).toBe('howdy!');
+    });
+
     test('ModuleThread', async () => {
         const executionTimeThreaded = getExecutionTime('ModuleThread');
         const promises = [];
